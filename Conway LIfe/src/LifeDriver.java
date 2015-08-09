@@ -32,7 +32,6 @@ public class LifeDriver
         
         String line;
         boolean x[][] = new boolean[dim][dim];
-//        System.out.println("");
         char inChars[];
 
 //        BufferedReader buffer=new BufferedReader(new InputStreamReader(System.in));
@@ -40,7 +39,6 @@ public class LifeDriver
         for( int ii=0; ii<dim; ii++ )
         {
             line=buffer.readLine();
-//            System.out.println("**"+line+"**");
             inChars = new char[line.length()];
             line.getChars(0, line.length(), inChars, 0);
             for( int jj=0; jj<line.length() && jj < dim; jj++ )
@@ -49,14 +47,15 @@ public class LifeDriver
                     x[ii][jj] = true;
                 else
                     x[ii][jj] = false;
-//                System.out.print(x[ii][jj]);
             }
-//            System.out.println("");
         }
         buffer.close();
         LifeGrid lg = new LifeGrid(dim);
+        System.out.println("Gridded");
         lg.populate(x);
+        System.out.println("Populated");
         lg.run();
+        System.out.println("Runned");
     }
     
     
@@ -73,7 +72,6 @@ public class LifeDriver
         for( int ii=0; ii<dim; ii++ )
         {
             line=buffer.readLine();
-//            System.out.println("**"+line+"**");
             inChars = new char[line.length()];
             line.getChars(0, line.length(), inChars, 0);
             for( int jj=0; jj<line.length() && jj < dim; jj++ )
@@ -82,15 +80,12 @@ public class LifeDriver
                     x[ii][jj] = true;
                 else
                     x[ii][jj] = false;
-//                System.out.print(x[ii][jj]);
             }
-//            System.out.println("");
         }
         LifeGrid lg = new LifeGrid(dim);
         lg.populate(x);
         lg.run();
     }
-    
     
     private void ldInit()throws InterruptedException
     {
@@ -102,15 +97,25 @@ public class LifeDriver
 
     static public void main(String[] argv)
     {
+    	System.out.println("Running The Thing");
+    	String filename;
+    	
+    	if( argv.length != 0 )
+    	{
+    		filename = argv[0];
+    	}
+    	else
+    	{
+    		filename = "pulsar.txt";
+    	}
     	try
     	{
-    		new LifeDriver(17, "pulsar.txt");
+    		new LifeDriver(17, filename);
     	}
     	catch( Exception e)
     	{
-    		
-    	}
-        
+    		System.out.println("Boom!!! "+e.getMessage());
+    	}        
     }
 
 }

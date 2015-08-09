@@ -1,4 +1,4 @@
-import gpdraw.*;
+import javax.swing.*;
 
 import java.awt.*;
 
@@ -13,10 +13,21 @@ public class LifeGrid
     // instance variables - replace the example below with your own
     private int gridDim;
     private int cellSize=8;
+    private boolean debug=false;
     LifeCell[][] cellsBefore;
     LifeCell[][] cellsAfter;
-    SketchPad paper = new SketchPad(500,500,0);
-    DrawingTool pen = new DrawingTool(paper);
+    JFrame frame = new JFrame(); // (500,500,0);
+    JPanel paper = new JPanel();
+
+    Graphics pen;
+    
+    private void debStr(Object o)
+    {
+    	if( debug )
+    	{
+    		System.out.print(o);
+    	}
+    }
 
     /**
      * Constructor for objects of class LifeGrid
@@ -32,6 +43,11 @@ public class LifeGrid
         gridDim = dim+2;
         cellsBefore = new LifeCell[gridDim][gridDim];
         cellsAfter = new LifeCell[gridDim][gridDim];
+        
+        paper.setPreferredSize(new Dimension(500, 500));
+        frame.add(paper);
+        frame.setVisible(true);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         setupGrid();
     }
@@ -94,17 +110,13 @@ public class LifeGrid
             }
         }
     }
-    
-    private int location(int ii)
-    {
-        return (ii*cellSize + cellSize/2) - (gridDim/2*cellSize);
-    }
-    
+
     public boolean drawCells()
     {
         boolean alive=false;
         
-//        System.out.println("\n");
+        pen = paper.getGraphics();
+        debStr("\nDrawing Cells\n");
         for( int ii=1; ii<gridDim-1; ii++ )
         {
             for( int jj=1; jj<gridDim-1; jj++ )
@@ -113,20 +125,21 @@ public class LifeGrid
                 {
                     alive = true;
                     pen.setColor(Color.BLACK);
-//                    System.out.print("1");
+                    debStr("1");
                 }
                 else
                 {
                     pen.setColor(Color.YELLOW);
-//                    System.out.print("0");
+                    debStr("0");
                 }
-                pen.up();
-//                pen.move(ii*cellSize+cellSize/2, jj*cellSize+cellSize/2);
-                pen.move(location(ii), location(jj));
-                pen.down();
-                pen.drawCircle(1.5);
+//              pen.move(ii*cellSize+cellSize/2, jj*cellSize+cellSize/2);
+                pen.drawOval(ii*cellSize+cellSize/2, jj*cellSize+cellSize/2, cellSize/2, cellSize/2);
+                //pen.up();
+                //pen.move(location(ii), location(jj));
+                //pen.down();
+                //pen.drawCircle(1.5);
             }
-            System.out.println("");
+            debStr("");
         }
         return alive;
     }
